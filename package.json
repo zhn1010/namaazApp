@@ -2,7 +2,7 @@
   "name": "namaz-app-ts",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://zhn1010.github.io",
+  "homepage": "https://zhn1010.github.io/namaazApp/",
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
@@ -19,6 +19,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "recoil": "^0.7.6",
     "typescript": "^4.8.4",
     "underscore": "^1.13.6",
     "web-vitals": "^2.1.4"
