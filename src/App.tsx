@@ -34,7 +34,7 @@ function App() {
       {zekr.map((item, i) => <Tooltip title={zekrList[item]}><Typography margin={1} fontFamily="Almarai" variant='h6' key={item}>
           ركعت {EnDigitToFa(`${i + 1}`)}: {(`${item + 1}`)}
         </Typography></Tooltip>)}
-      <Button sx={{mt: 4}} size='small' variant="outlined" startIcon={<RefreshIcon />} onClick={handleClick}>Refresh</Button>
+      <Button sx={{mt: 4}} size='small' startIcon={<RefreshIcon />} onClick={handleClick}>Refresh</Button>
     </Box>
   );
 }
