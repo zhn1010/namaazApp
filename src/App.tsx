@@ -1,40 +1,99 @@
 /* eslint-disable no-extend-native */
-import sorahList from './sorah';
 import _ from 'underscore';
-import { Box, Button, Link, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Link, Stack, Typography } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
 import { useRecoilState } from 'recoil';
-import { sorahState, zekrState } from './atoms';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { sorahState, themeState, zekrState } from './atoms';
+import sorahList from './sorah';
 
-const EnDigitToFa= function(str: string) {
-  return str.replace(/\d/g, (d: any) => ['صفرم', 'اول', 'دوم', 'سوم', 'چهارم'][d])
+const EnDigitToFa = function (str: string) {
+  return str.replace(
+    /\d/g,
+    (d: any) => ['صفرم', 'اول', 'دوم', 'سوم', 'چهارم'][d],
+  );
+};
+
+export const themes = [
+  'گوش دادن به صدای خودم',
+  'نوشتن اذکار',
+  'ترجمه اذکار',
+  'همراهی قلب و زبان',
+  'اذعان کردن اذکار',
+];
+
+function getRandomInt(max: number) {
+  return Math.floor(Math.random() * max);
 }
 
-function App() {  
-  const zekrList = [
-    "سبحان ربي الاعلي و بحمده. اللهم صل علي محمد و آل محمد", 
-    "سبحان ربي الاعلي و بحمده", 
-    "سبحان الله، سبحان الله، سبحان الله", 
-    "سبحان الله، سبحان الله، سبحان الله. اللهم صل علي محمد و آل محمد",
-  ];
-
+function App() {
   const [sorah, setSorah] = useRecoilState(sorahState);
   const [zekr, setZekr] = useRecoilState(zekrState);
+  const [theme, setTheme] = useRecoilState(themeState);
 
   const handleClick = () => {
     setSorah(_.shuffle(sorahList).slice(0, 2));
     setZekr(_.shuffle([0, 1, 2, 3]));
-  }
+    setTheme(getRandomInt(themes.length));
+  };
 
   return (
-    <Box display="flex" alignItems="center" justifyContent="center" height={1 / 1} flexDirection="column">
-      {sorah.map(
-        (item, i) => <Typography fontFamily="Almarai" margin={1} variant='h4' key={item.name}><Link href={`https://quran.com/${item.id}`}><LaunchIcon /></Link>ركعت {EnDigitToFa(`${i + 1}`)}: {item.name}</Typography>)}
-      {zekr.map((item, i) => <Tooltip title={zekrList[item]}><Typography margin={1} fontFamily="Almarai" variant='h6' key={item}>
-          ركعت {EnDigitToFa(`${i + 1}`)}: {(`${item + 1}`)}
-        </Typography></Tooltip>)}
-      <Button sx={{mt: 4}} size='small' startIcon={<RefreshIcon />} onClick={handleClick}>Refresh</Button>
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      height={1 / 1}
+      flexDirection="column"
+    >
+      <Box borderBottom="1px solid black" paddingBottom={2}>
+        {sorah.map((item, i) => (
+          <Stack
+            flexDirection="row-reverse"
+            key={item.name}
+            alignItems="center"
+          >
+            <Typography fontFamily="Almarai" margin={1} variant="h4">
+              ركعت {EnDigitToFa(`${i + 1}`)}
+            </Typography>
+            <Typography fontFamily="Almarai" margin={1} variant="h4">
+              :
+            </Typography>
+            <Typography fontFamily="sura_names" variant="h2">
+              surah
+            </Typography>
+            <Typography fontFamily="sura_names" variant="h2">
+              {item.id}
+            </Typography>
+            <Link href={`https://quran.com/${Number(item.id)}`}>
+              <LaunchIcon />
+            </Link>
+          </Stack>
+        ))}
+      </Box>
+      <Box marginY={2}>
+        {zekr.map((item, i) => (
+          <Typography margin={1} fontFamily="Almarai" variant="h6" key={item}>
+            ركعت {EnDigitToFa(`${i + 1}`)}: {`${item + 1}`}
+          </Typography>
+        ))}
+      </Box>
+      <Typography
+        margin={1}
+        fontFamily="Almarai"
+        variant="h6"
+        borderTop="1px solid black"
+        sx={{ paddingTop: 2 }}
+      >
+        {themes[theme]}
+      </Typography>
+      <Button
+        sx={{ mt: 4 }}
+        size="small"
+        startIcon={<RefreshIcon />}
+        onClick={handleClick}
+      >
+        Refresh
+      </Button>
     </Box>
   );
 }

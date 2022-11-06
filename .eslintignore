@@ -1,0 +1,4 @@
+node_modules
+lib/landing/*
+lib/beautiful-login
+*.d.ts
