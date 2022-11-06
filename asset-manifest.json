@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/namaazApp/static/css/main.4fbd1f35.css",
-    "main.js": "/namaazApp/static/js/main.c6ab9aa1.js",
+    "main.js": "/namaazApp/static/js/main.6c809b87.js",
     "static/js/787.e5df70ba.chunk.js": "/namaazApp/static/js/787.e5df70ba.chunk.js",
     "index.html": "/namaazApp/index.html",
     "main.4fbd1f35.css.map": "/namaazApp/static/css/main.4fbd1f35.css.map",
-    "main.c6ab9aa1.js.map": "/namaazApp/static/js/main.c6ab9aa1.js.map",
+    "main.6c809b87.js.map": "/namaazApp/static/js/main.6c809b87.js.map",
     "787.e5df70ba.chunk.js.map": "/namaazApp/static/js/787.e5df70ba.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4fbd1f35.css",
-    "static/js/main.c6ab9aa1.js"
+    "static/js/main.6c809b87.js"
   ]
 }
