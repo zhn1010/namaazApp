@@ -52,16 +52,16 @@ function App() {
             key={item.name}
             alignItems="center"
           >
-            <Typography fontFamily="Almarai" margin={1} variant="h4">
+            <Typography fontFamily="Almarai" margin={1} variant="h5">
               ركعت {EnDigitToFa(`${i + 1}`)}
             </Typography>
-            <Typography fontFamily="Almarai" margin={1} variant="h4">
+            <Typography fontFamily="Almarai" margin={1} variant="h5">
               :
             </Typography>
-            <Typography fontFamily="sura_names" variant="h2">
+            <Typography fontFamily="sura_names" variant="h3">
               surah
             </Typography>
-            <Typography fontFamily="sura_names" variant="h2">
+            <Typography fontFamily="sura_names" variant="h3">
               {item.id}
             </Typography>
             <Link href={`https://quran.com/${Number(item.id)}`}>
