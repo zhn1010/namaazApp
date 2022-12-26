@@ -22,9 +22,9 @@ const EnDigitToFa = function (str: string) {
 //   'اذعان کردن اذکار',
 // ];
 
-function getRandomInt(max: number) {
-  return Math.floor(Math.random() * max);
-}
+// function getRandomInt(max: number) {
+//   return Math.floor(Math.random() * max);
+// }
 
 function App() {
   const [sorah, setSorah] = useRecoilState(sorahState);
