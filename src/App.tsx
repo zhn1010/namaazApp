@@ -77,7 +77,7 @@ function App() {
           </Typography>
         ))}
       </Box>
-      <Typography
+      {/* <Typography
         margin={1}
         fontFamily="Almarai"
         variant="h6"
@@ -85,7 +85,7 @@ function App() {
         sx={{ paddingTop: 2 }}
       >
         {themes[theme]}
-      </Typography>
+      </Typography> */}
       <Button
         sx={{ mt: 4 }}
         size="small"
