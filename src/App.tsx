@@ -4,7 +4,7 @@ import { Box, Button, Link, Stack, Typography } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
 import { useRecoilState } from 'recoil';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { sorahState, themeState, zekrState } from './atoms';
+import { sorahState, zekrState } from './atoms';
 import sorahList from './sorah';
 
 const EnDigitToFa = function (str: string) {
@@ -14,13 +14,13 @@ const EnDigitToFa = function (str: string) {
   );
 };
 
-export const themes = [
-  'گوش دادن به صدای خودم',
-  'نوشتن اذکار',
-  'ترجمه اذکار',
-  'همراهی قلب و زبان',
-  'اذعان کردن اذکار',
-];
+// export const themes = [
+//   'گوش دادن به صدای خودم',
+//   'نوشتن اذکار',
+//   'ترجمه اذکار',
+//   'همراهی قلب و زبان',
+//   'اذعان کردن اذکار',
+// ];
 
 function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
@@ -29,12 +29,12 @@ function getRandomInt(max: number) {
 function App() {
   const [sorah, setSorah] = useRecoilState(sorahState);
   const [zekr, setZekr] = useRecoilState(zekrState);
-  const [theme, setTheme] = useRecoilState(themeState);
+  // const [theme, setTheme] = useRecoilState(themeState);
 
   const handleClick = () => {
     setSorah(_.shuffle(sorahList).slice(0, 2));
     setZekr(_.shuffle([0, 1, 2, 3]));
-    setTheme(getRandomInt(themes.length));
+    // setTheme(getRandomInt(themes.length));
   };
 
   return (
