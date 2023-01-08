@@ -103,6 +103,14 @@ const sorah = [
     name: 'قدر',
     id: '097',
   },
+  {
+    name: 'البینه',
+    id: '098',
+  },
+  {
+    name: 'الزلزله',
+    id: '099',
+  },
 ];
 
 export default sorah;

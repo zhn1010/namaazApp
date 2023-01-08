@@ -4,37 +4,84 @@ import { Box, Button, Link, Stack, Typography } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
 import { useRecoilState } from 'recoil';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { sorahState, zekrState } from './atoms';
-import sorahList from './sorah';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import Duration from 'duration-relativetimeformat';
+import { selectedSorahState, selectedZekrState, sorahListState } from './atoms';
 
-const EnDigitToFa = function (str: string) {
-  return str.replace(
-    /\d/g,
-    (d: any) => ['صفرم', 'اول', 'دوم', 'سوم', 'چهارم'][d],
-  );
-};
+const EnDigitToFa = (str: string) =>
+  str.replace(/\d/g, (d: any) => ['صفرم', 'اول', 'دوم', 'سوم', 'چهارم'][d]);
+type wightedItemsType = {
+  id: string;
+  name: string;
+  weight: number;
+}[];
 
-// export const themes = [
-//   'گوش دادن به صدای خودم',
-//   'نوشتن اذکار',
-//   'ترجمه اذکار',
-//   'همراهی قلب و زبان',
-//   'اذعان کردن اذکار',
-// ];
+function weightedRandomSelection(items: wightedItemsType) {
+  const totalWeight = items.reduce((prev, cur) => prev + cur.weight, 0);
+  const randomNumber = Math.random() * totalWeight;
+  let weightSum = 0;
+  for (let i = 0; i < items.length; i++) {
+    weightSum += items[i].weight;
+    if (randomNumber < weightSum) {
+      return items[i];
+    }
+  }
+  return items[items.length - 1];
+}
 
-// function getRandomInt(max: number) {
-//   return Math.floor(Math.random() * max);
-// }
+function selectTwoItemsWithoutRepetition(items: wightedItemsType) {
+  let copy = [...items];
+  const item1 = weightedRandomSelection(items);
+  copy = copy.filter((i) => i.id !== item1.id);
+  const item2 = weightedRandomSelection(copy);
+
+  return [item1, item2];
+}
 
 function App() {
-  const [sorah, setSorah] = useRecoilState(sorahState);
-  const [zekr, setZekr] = useRecoilState(zekrState);
-  // const [theme, setTheme] = useRecoilState(themeState);
+  const [selectedSorah, setSelectedSorah] = useRecoilState(selectedSorahState);
+  const [selectedZekr, setSelectedZekr] = useRecoilState(selectedZekrState);
+  const [sorahList, setSorahList] = useRecoilState(sorahListState);
+  const duree = new Duration('en');
+
+  const columns: GridColDef[] = [
+    {
+      field: 'name',
+      headerName: 'Sorah',
+      sortable: false,
+      renderCell: (params) => (
+        <Typography fontFamily="sura_names" variant="body1">
+          {params.row.id}
+        </Typography>
+      ),
+    },
+    {
+      field: 'lastRevised',
+      headerName: 'Last revised',
+      width: 170,
+      valueGetter: (params: GridValueGetterParams) => {
+        const currentTime = Date.now();
+        const durationString = duree.format(
+          params.row.lastRevised,
+          currentTime,
+        );
+        return durationString;
+      },
+    },
+  ];
 
   const handleClick = () => {
-    setSorah(_.shuffle(sorahList).slice(0, 2));
-    setZekr(_.shuffle([0, 1, 2, 3]));
-    // setTheme(getRandomInt(themes.length));
+    const selectedTwoSorah = selectTwoItemsWithoutRepetition(
+      sorahList.map((item) => ({
+        id: item.id,
+        name: item.name,
+        weight: Date.now() - item.lastRevised,
+      })),
+    );
+    setSelectedSorah(
+      selectedTwoSorah.map((item) => ({ id: item.id, name: item.name })),
+    );
+    setSelectedZekr(_.shuffle([0, 1, 2, 3]));
   };
 
   return (
@@ -46,12 +93,8 @@ function App() {
       flexDirection="column"
     >
       <Box borderBottom="1px solid black" paddingBottom={2}>
-        {sorah.map((item, i) => (
-          <Stack
-            flexDirection="row-reverse"
-            key={item.name}
-            alignItems="center"
-          >
+        {selectedSorah.map((item, i) => (
+          <Stack flexDirection="row-reverse" key={item.id} alignItems="center">
             <Typography fontFamily="Almarai" margin={1} variant="h5">
               ركعت {EnDigitToFa(`${i + 1}`)}
             </Typography>
@@ -64,28 +107,27 @@ function App() {
             <Typography fontFamily="sura_names" variant="h3">
               {item.id}
             </Typography>
-            <Link href={`https://quran.com/${Number(item.id)}`}>
+            <Link
+              href={`https://quran.com/${Number(item.id)}`}
+              onClick={() =>
+                setSorahList([
+                  ...sorahList.filter((itm) => itm.id !== item.id),
+                  { id: item.id, name: item.name, lastRevised: Date.now() },
+                ])
+              }
+            >
               <LaunchIcon />
             </Link>
           </Stack>
         ))}
       </Box>
       <Box marginY={2}>
-        {zekr.map((item, i) => (
+        {selectedZekr.map((item, i) => (
           <Typography margin={1} fontFamily="Almarai" variant="h6" key={item}>
             ركعت {EnDigitToFa(`${i + 1}`)}: {`${item + 1}`}
           </Typography>
         ))}
       </Box>
-      {/* <Typography
-        margin={1}
-        fontFamily="Almarai"
-        variant="h6"
-        borderTop="1px solid black"
-        sx={{ paddingTop: 2 }}
-      >
-        {themes[theme]}
-      </Typography> */}
       <Button
         sx={{ mt: 4 }}
         size="small"
@@ -94,6 +136,14 @@ function App() {
       >
         Refresh
       </Button>
+      <div style={{ height: 400, width: '100%' }}>
+        <DataGrid
+          rows={sorahList}
+          columns={columns}
+          pageSize={50}
+          rowsPerPageOptions={[50]}
+        />
+      </div>
     </Box>
   );
 }

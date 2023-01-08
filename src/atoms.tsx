@@ -17,14 +17,20 @@ const localStorageEffect =
     });
   };
 
-export const sorahState = atom({
-  key: 'sorahState',
+export const selectedSorahState = atom({
+  key: 'selectedSorahState',
   default: sorah.slice(0, 2),
   effects: [localStorageEffect('current_sorah')],
 });
 
-export const zekrState = atom({
-  key: 'zekrState',
+export const sorahListState = atom({
+  key: 'sorahListState',
+  default: sorah.map((item) => ({ ...item, lastRevised: Date.now() })),
+  effects: [localStorageEffect('sorah_list')],
+});
+
+export const selectedZekrState = atom({
+  key: 'selectedZekrState',
   default: [0, 1, 2, 3],
   effects: [localStorageEffect('current_zekr')],
 });
